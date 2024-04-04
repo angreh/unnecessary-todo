@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package todos;
+
+option go_package = "/todos";
+
+message Todo {
+  string title = 1;
+}
+
+message GetAllRequest {}
+
+message GetAllResponse {
+  string success = 1;
+  repeated Todo todos = 2;
+}
+
+message InsertRequest {
+  string title = 1;
+}
+
+message InsertResponse {
+  string success = 1;
+  int32 insertedId = 2;
+}
+
+service TodoService {
+  rpc GetAll(GetAllRequest) returns (GetAllResponse);
+  rpc Insert(InsertRequest) returns (InsertResponse);
+}
+
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative todos.proto
+
+// protoc --js_out=import_style=commonjs,binary:. --grpc_out=grpc_js:. --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --plugin=protoc-gen-grpc=./node_modules/.bin/grpc_tools_node_protoc_plugin --ts_out=grpc_js:. -I=. todos.proto

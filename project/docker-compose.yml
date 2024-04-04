@@ -1,0 +1,112 @@
+version: "3.7"
+
+services:
+  ct-web:
+    image: httpd:latest
+    container_name: ct-web
+    volumes:
+      - ./../mono-front/web/build:/usr/local/apache2/htdocs
+    ports:
+      - 3030:80
+    environment:
+      - NODE_ENV=development
+    restart: always
+
+  ct-api:
+    container_name: ct-api
+    build:
+      context: ./../mono-front/api
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - NODE_ENV=production
+    restart: always
+
+  ct-crud:
+    container_name: ct-crud
+    build:
+      context: ./../crud
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - ct-postgres
+
+  ct-logger:
+    container_name: ct-logger
+    build:
+      context: ./../logger
+      dockerfile: Dockerfile
+    restart: always
+
+  ct-queue-consumer:
+    container_name: ct-queue-consumer
+    build:
+      context: ./../queue-consumer
+      dockerfile: Dockerfile
+    restart: always
+
+  ct-postgres:
+    container_name: ct-postgres
+    image: "postgres:14.2"
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users
+    volumes:
+      - ./data/postgres/:/var/lib/postgresql/data/
+
+  ct-mongo:
+    container_name: ct-mongo
+    image: "mongo:4.2.16-bionic"
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: logs
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./data/mongo/:/data/db
+
+  ct-loki:
+    container_name: ct-loki
+    user: "1000"
+    image: grafana/loki:main
+    volumes:
+      - "./data/loki:/loki"
+    ports:
+      - "3100:3100"
+    restart: always
+
+  ct-grafana:
+    container_name: ct-grafana
+    user: "1000"
+    image: grafana/grafana:latest
+    volumes:
+      - "./data/grafana:/var/lib/grafana"
+    ports:
+      - "3000:3000"
+    restart: always
+
+  ct-prometheus:
+    container_name: ct-prometheus
+    user: "1000"
+    image: prom/prometheus:latest
+    volumes:
+      - "./data/prometheus:/prometheus"
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ct-rabbitmq:
+    container_name: ct-rabbitmq
+    image: 'rabbitmq:3.9-alpine'
+    restart: always
+    ports:
+      - "5672:5672"

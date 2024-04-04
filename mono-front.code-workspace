@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "mono-front"
+		},
+		{
+			"path": "project"
+		},
+		{
+			"path": "crud"
+		},
+		{
+			"path": "protos"
+		},
+		{
+			"path": "logger"
+		},
+		{
+			"path": "queue-consumer"
+		}
+	],
+	"settings": {}
+}

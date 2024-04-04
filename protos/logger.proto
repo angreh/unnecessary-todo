@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package logger;
+
+option go_package = "/logger";
+
+message Log {
+  string name = 1;
+  string action = 2;
+  string message = 3;
+}
+
+message RegisterRequest {
+  Log log = 1;
+}
+
+message RegisterResponse {
+  bool success = 1;
+}
+
+service LoggerService {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+}
