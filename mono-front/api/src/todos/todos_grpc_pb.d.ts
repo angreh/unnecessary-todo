@@ -6,6 +6,8 @@
 
 import * as grpc from "@grpc/grpc-js";
 import * as todos_pb from "./todos_pb";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as google_protobuf_any_pb from "google-protobuf/google/protobuf/any_pb";
 
 interface ITodoServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     getAll: ITodoServiceService_IGetAll;

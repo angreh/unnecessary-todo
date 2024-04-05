@@ -75,14 +75,19 @@ func (t *TodoServer) Insert(ctx context.Context, req *todos.InsertRequest) (*tod
 	log.Println("hmm")
 
 	var newId int32
-	query := `insert into todos (title) values ($1) returning id`
+	query := `insert into todos (title,type,status,created_at) values ($1,$2,$3,$4) returning id`
 
-	err := app.DB.QueryRowContext(ctx, query, req.Title).Scan(&newId)
+	err := app.DB.QueryRowContext(ctx, query,
+		req.Todo.Title,
+		req.Todo.Type,
+		req.Todo.Status,
+		time.Now(),
+	).Scan(&newId)
 	if err != nil {
 		return nil, err
 	}
 
-	logIt("insert_todo", fmt.Sprintf("new todo %s inserted", req.Title))
+	logIt("insert_todo", fmt.Sprintf("new todo %s inserted", req.Todo.Title))
 
 	return &todos.InsertResponse{
 		Success:    "true",

@@ -5,10 +5,26 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as google_protobuf_any_pb from "google-protobuf/google/protobuf/any_pb";
 
 export class Todo extends jspb.Message { 
+
+    hasId(): boolean;
+    clearId(): void;
+    getId(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setId(value?: google_protobuf_timestamp_pb.Timestamp): Todo;
     getTitle(): string;
     setTitle(value: string): Todo;
+    getType(): string;
+    setType(value: string): Todo;
+    getStatus(): string;
+    setStatus(value: string): Todo;
+
+    hasCreatedat(): boolean;
+    clearCreatedat(): void;
+    getCreatedat(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setCreatedat(value?: google_protobuf_timestamp_pb.Timestamp): Todo;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Todo.AsObject;
@@ -22,7 +38,11 @@ export class Todo extends jspb.Message {
 
 export namespace Todo {
     export type AsObject = {
+        id?: google_protobuf_timestamp_pb.Timestamp.AsObject,
         title: string,
+        type: string,
+        status: string,
+        createdat?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     }
 }
 
@@ -69,8 +89,11 @@ export namespace GetAllResponse {
 }
 
 export class InsertRequest extends jspb.Message { 
-    getTitle(): string;
-    setTitle(value: string): InsertRequest;
+
+    hasTodo(): boolean;
+    clearTodo(): void;
+    getTodo(): Todo | undefined;
+    setTodo(value?: Todo): InsertRequest;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): InsertRequest.AsObject;
@@ -84,7 +107,7 @@ export class InsertRequest extends jspb.Message {
 
 export namespace InsertRequest {
     export type AsObject = {
-        title: string,
+        todo?: Todo.AsObject,
     }
 }
 

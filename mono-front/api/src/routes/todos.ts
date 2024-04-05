@@ -23,7 +23,8 @@ const getTodosClient = <T>(NewRequest: T) => {
   return { client, request };
 };
 
-type TodoType = Todo.AsObject;
+export type TodoType = Todo.AsObject;
+
 type getAllResponseType = { todos: TodoType[] };
 type insertResponseType = {
   success: boolean;
@@ -52,6 +53,8 @@ export const apiRouter = router({
     .input(
       z.object({
         title: z.string(),
+        type: z.string(),
+        status: z.string(),
       })
     )
     .mutation(
@@ -59,7 +62,12 @@ export const apiRouter = router({
         new Promise<insertResponseType>((resolve, reject) => {
           const { client, request } = getTodosClient(new InsertRequest());
 
-          request.setTitle(input.title);
+          const todo = new Todo()
+          todo.setTitle(input.title)
+          todo.setType(input.type)
+          todo.setStatus(input.status)
+
+          request.setTodo(todo)
 
           client.insert(request, (error, response: InsertResponse) => {
             if (error) {

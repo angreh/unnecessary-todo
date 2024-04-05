@@ -12,6 +12,10 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+goog.object.extend(proto, google_protobuf_timestamp_pb);
+var google_protobuf_any_pb = require('google-protobuf/google/protobuf/any_pb.js');
+goog.object.extend(proto, google_protobuf_any_pb);
 goog.exportSymbol('proto.todos.GetAllRequest', null, global);
 goog.exportSymbol('proto.todos.GetAllResponse', null, global);
 goog.exportSymbol('proto.todos.InsertRequest', null, global);
@@ -154,7 +158,11 @@ proto.todos.Todo.prototype.toObject = function(opt_includeInstance) {
  */
 proto.todos.Todo.toObject = function(includeInstance, msg) {
   var f, obj = {
-    title: jspb.Message.getFieldWithDefault(msg, 1, "")
+    id: (f = msg.getId()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    title: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    type: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    status: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    createdat: (f = msg.getCreatedat()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -192,8 +200,26 @@ proto.todos.Todo.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setId(value);
+      break;
+    case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setTitle(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setType(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStatus(value);
+      break;
+    case 5:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedat(value);
       break;
     default:
       reader.skipField();
@@ -224,22 +250,89 @@ proto.todos.Todo.prototype.serializeBinary = function() {
  */
 proto.todos.Todo.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getId();
+  if (f != null) {
+    writer.writeMessage(
+      1,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
   f = message.getTitle();
   if (f.length > 0) {
     writer.writeString(
-      1,
+      2,
       f
+    );
+  }
+  f = message.getType();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getCreatedat();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional string title = 1;
+ * optional google.protobuf.Timestamp id = 1;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.todos.Todo.prototype.getId = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 1));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.todos.Todo} returns this
+*/
+proto.todos.Todo.prototype.setId = function(value) {
+  return jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.todos.Todo} returns this
+ */
+proto.todos.Todo.prototype.clearId = function() {
+  return this.setId(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.todos.Todo.prototype.hasId = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional string title = 2;
  * @return {string}
  */
 proto.todos.Todo.prototype.getTitle = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -248,7 +341,80 @@ proto.todos.Todo.prototype.getTitle = function() {
  * @return {!proto.todos.Todo} returns this
  */
 proto.todos.Todo.prototype.setTitle = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string type = 3;
+ * @return {string}
+ */
+proto.todos.Todo.prototype.getType = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.todos.Todo} returns this
+ */
+proto.todos.Todo.prototype.setType = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string status = 4;
+ * @return {string}
+ */
+proto.todos.Todo.prototype.getStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.todos.Todo} returns this
+ */
+proto.todos.Todo.prototype.setStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp createdAt = 5;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.todos.Todo.prototype.getCreatedat = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 5));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.todos.Todo} returns this
+*/
+proto.todos.Todo.prototype.setCreatedat = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.todos.Todo} returns this
+ */
+proto.todos.Todo.prototype.clearCreatedat = function() {
+  return this.setCreatedat(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.todos.Todo.prototype.hasCreatedat = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
@@ -575,7 +741,7 @@ proto.todos.InsertRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.todos.InsertRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    title: jspb.Message.getFieldWithDefault(msg, 1, "")
+    todo: (f = msg.getTodo()) && proto.todos.Todo.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -613,8 +779,9 @@ proto.todos.InsertRequest.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setTitle(value);
+      var value = new proto.todos.Todo;
+      reader.readMessage(value,proto.todos.Todo.deserializeBinaryFromReader);
+      msg.setTodo(value);
       break;
     default:
       reader.skipField();
@@ -645,31 +812,51 @@ proto.todos.InsertRequest.prototype.serializeBinary = function() {
  */
 proto.todos.InsertRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getTitle();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getTodo();
+  if (f != null) {
+    writer.writeMessage(
       1,
-      f
+      f,
+      proto.todos.Todo.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional string title = 1;
- * @return {string}
+ * optional Todo todo = 1;
+ * @return {?proto.todos.Todo}
  */
-proto.todos.InsertRequest.prototype.getTitle = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+proto.todos.InsertRequest.prototype.getTodo = function() {
+  return /** @type{?proto.todos.Todo} */ (
+    jspb.Message.getWrapperField(this, proto.todos.Todo, 1));
 };
 
 
 /**
- * @param {string} value
+ * @param {?proto.todos.Todo|undefined} value
+ * @return {!proto.todos.InsertRequest} returns this
+*/
+proto.todos.InsertRequest.prototype.setTodo = function(value) {
+  return jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
  * @return {!proto.todos.InsertRequest} returns this
  */
-proto.todos.InsertRequest.prototype.setTitle = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+proto.todos.InsertRequest.prototype.clearTodo = function() {
+  return this.setTodo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.todos.InsertRequest.prototype.hasTodo = function() {
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
