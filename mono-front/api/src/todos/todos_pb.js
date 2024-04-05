@@ -158,7 +158,7 @@ proto.todos.Todo.prototype.toObject = function(opt_includeInstance) {
  */
 proto.todos.Todo.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: (f = msg.getId()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    id: (f = msg.getId()) && google_protobuf_any_pb.Any.toObject(includeInstance, f),
     title: jspb.Message.getFieldWithDefault(msg, 2, ""),
     type: jspb.Message.getFieldWithDefault(msg, 3, ""),
     status: jspb.Message.getFieldWithDefault(msg, 4, ""),
@@ -200,8 +200,8 @@ proto.todos.Todo.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new google_protobuf_timestamp_pb.Timestamp;
-      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      var value = new google_protobuf_any_pb.Any;
+      reader.readMessage(value,google_protobuf_any_pb.Any.deserializeBinaryFromReader);
       msg.setId(value);
       break;
     case 2:
@@ -255,7 +255,7 @@ proto.todos.Todo.serializeBinaryToWriter = function(message, writer) {
     writer.writeMessage(
       1,
       f,
-      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+      google_protobuf_any_pb.Any.serializeBinaryToWriter
     );
   }
   f = message.getTitle();
@@ -291,17 +291,17 @@ proto.todos.Todo.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional google.protobuf.Timestamp id = 1;
- * @return {?proto.google.protobuf.Timestamp}
+ * optional google.protobuf.Any id = 1;
+ * @return {?proto.google.protobuf.Any}
  */
 proto.todos.Todo.prototype.getId = function() {
-  return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 1));
+  return /** @type{?proto.google.protobuf.Any} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_any_pb.Any, 1));
 };
 
 
 /**
- * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @param {?proto.google.protobuf.Any|undefined} value
  * @return {!proto.todos.Todo} returns this
 */
 proto.todos.Todo.prototype.setId = function(value) {

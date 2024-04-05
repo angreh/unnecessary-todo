@@ -3,13 +3,13 @@ import { useQuery } from "react-query";
 import server from "../utils/trpcServer";
 import { columns } from "../components/tasks/columns";
 import { DataTable } from "../components/tasks/data-table";
-
-import "./../styles/App.css";
 import { BoxHeader } from "../components/box-header";
 import { InputForm } from "../components/tasks/input-form";
 
+import "./../styles/App.css";
+
 function App() {
-  const { data, isLoading, error } = useQuery("todos", async () => {
+  const { data, isLoading, error, refetch } = useQuery("todos", async () => {
     const response = await server.todos.getAll.query();
     return response.todos;
   });
@@ -28,7 +28,7 @@ function App() {
         <BoxHeader title="New Task" description="Add a new task" />
 
         <div className="px-8 py-4">
-          <InputForm />
+          <InputForm onFinish={refetch} />
         </div>
       </div>
 

@@ -16,8 +16,16 @@ import {
   TodoTypeType,
   TodoTypesValues,
 } from "../../types/todos";
+import {
+  RefetchOptions,
+  RefetchQueryFilters,
+} from "react-query/types/core/types";
 
-export const InputForm = () => {
+type InputFormProps = {
+  onFinish: (options?: RefetchOptions & RefetchQueryFilters) => Promise<any>;
+};
+
+export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
   const [value, setValue] = useState("");
   const [todoType, setTodoType] = useState<TodoTypeType>();
   const [todoStatus, setTodoStatus] = useState<TodoStatusType>();
@@ -31,8 +39,8 @@ export const InputForm = () => {
       });
 
       setValue("");
-      setTodoType(undefined);
-      setTodoStatus(undefined);
+
+      refetch();
     } catch (err) {
       if (err instanceof Error) {
         console.log(err.message);
@@ -57,23 +65,29 @@ export const InputForm = () => {
         onChange={(e) => setValue(e.target.value)}
         placeholder="New Task"
       />
+
       <Select onValueChange={setTdType}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Type" />
         </SelectTrigger>
         <SelectContent>
-          {TodoTypesValues.map((item) => (
-            <SelectItem value={item}>{item}</SelectItem>
+          {TodoTypesValues.map((item, index) => (
+            <SelectItem value={item} key={index}>
+              {item}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
+
       <Select onValueChange={setTdStatus}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>
-          {TodoStatusValues.map((item) => (
-            <SelectItem value={item}>{item}</SelectItem>
+          {TodoStatusValues.map((item, index) => (
+            <SelectItem value={item} key={index}>
+              {item}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>

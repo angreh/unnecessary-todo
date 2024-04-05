@@ -12,8 +12,8 @@ export class Todo extends jspb.Message {
 
     hasId(): boolean;
     clearId(): void;
-    getId(): google_protobuf_timestamp_pb.Timestamp | undefined;
-    setId(value?: google_protobuf_timestamp_pb.Timestamp): Todo;
+    getId(): google_protobuf_any_pb.Any | undefined;
+    setId(value?: google_protobuf_any_pb.Any): Todo;
     getTitle(): string;
     setTitle(value: string): Todo;
     getType(): string;
@@ -38,7 +38,7 @@ export class Todo extends jspb.Message {
 
 export namespace Todo {
     export type AsObject = {
-        id?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+        id?: google_protobuf_any_pb.Any.AsObject,
         title: string,
         type: string,
         status: string,

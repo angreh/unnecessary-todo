@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import { TodoServiceClient } from "../todos/todos_grpc_pb";
 import {
   Todo,
@@ -7,10 +9,8 @@ import {
   InsertResponse,
 } from "../todos/todos_pb";
 import * as grpc from "@grpc/grpc-js";
-import { z } from "zod";
-
-// import { publicProcedure, router, GRPCProcedure } from "./trcp";
 import { router, publicProcedure } from "./trcp";
+import { extractDate, extractId } from "./../utils/pb-wrapper";
 
 const getTodosClient = <T>(NewRequest: T) => {
   const client = new TodoServiceClient(
@@ -42,10 +42,16 @@ export const apiRouter = router({
             reject({ todos: [] } as getAllResponseType);
           }
 
-          const todos = response
-            .getTodosList()
-            .map((item) => ({ title: item.getTitle() }));
-          resolve({ todos } as getAllResponseType);
+          const todos = {
+            todos: response.getTodosList().map((item) => ({
+              id: extractId(item.getId()),
+              title: item.getTitle(),
+              type: item.getType(),
+              status: item.getStatus(),
+              createdat: extractDate(item.getCreatedat()),
+            })),
+          };
+          resolve(todos as getAllResponseType);
         });
       })
   ),
@@ -62,12 +68,12 @@ export const apiRouter = router({
         new Promise<insertResponseType>((resolve, reject) => {
           const { client, request } = getTodosClient(new InsertRequest());
 
-          const todo = new Todo()
-          todo.setTitle(input.title)
-          todo.setType(input.type)
-          todo.setStatus(input.status)
+          const todo = new Todo();
+          todo.setTitle(input.title);
+          todo.setType(input.type);
+          todo.setStatus(input.status);
 
-          request.setTodo(todo)
+          request.setTodo(todo);
 
           client.insert(request, (error, response: InsertResponse) => {
             if (error) {

@@ -3,9 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from "./../ui/button";
-import { Checkbox } from "./../ui/checkbox";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,11 +11,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./../ui/dropdown-menu";
+import { Button } from "./../ui/button";
+import { Checkbox } from "./../ui/checkbox";
+import { Badge } from "../ui/badge";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Task = {
+  id?: number;
   title: string;
+  type: string;
+  status: string;
+  createdat?: Date;
 };
 
 export const columns: ColumnDef<Task>[] = [
@@ -30,7 +32,9 @@ export const columns: ColumnDef<Task>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value:any) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
       />
     ),
@@ -38,7 +42,7 @@ export const columns: ColumnDef<Task>[] = [
       <div className="text-left">
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value:any) => row.toggleSelected(!!value)}
+          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
       </div>
@@ -59,7 +63,36 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
     cell: ({ row }) => {
-      return <div className="text-left">{row.getValue("title")}</div>;
+      const label = row.original.type;
+      return (
+        <div className="flex space-x-2">
+          <Badge variant="secondary">{label}</Badge>
+          <span>{row.getValue("title")}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      return <div className="text-left">{row.getValue("status")}</div>;
+    },
+  },
+  {
+    accessorKey: "createdat",
+    header: "Created At",
+    cell: ({ row }) => {
+      const options: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "numeric",
+      };
+      const value = new Date(row.getValue("createdat"));
+      const formattedValue = value.toLocaleDateString("es-ES", options);
+      return <div className="text-left">{formattedValue}</div>;
     },
   },
   {

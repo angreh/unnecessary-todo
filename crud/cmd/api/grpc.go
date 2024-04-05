@@ -11,6 +11,9 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 type TodoServer struct {
@@ -38,7 +41,7 @@ func (t *TodoServer) GetAll(ctx context.Context, req *todos.GetAllRequest) (*tod
 	ctx, cancel := context.WithTimeout(ctx, time.Second*3)
 	defer cancel()
 
-	query := `select title from todos order by id desc`
+	query := `select id,title,type,status,created_at from todos order by id desc`
 
 	rows, err := app.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -52,13 +55,30 @@ func (t *TodoServer) GetAll(ctx context.Context, req *todos.GetAllRequest) (*tod
 
 	for rows.Next() {
 		var todo todos.Todo
+		var id int64
+		var createdAt time.Time
 		err := rows.Scan(
+			&id,
 			&todo.Title,
+			&todo.Type,
+			&todo.Status,
+			&createdAt,
 		)
+
 		if err != nil {
 			log.Println("Error scanning", err)
 			return nil, err
 		}
+
+		wrapper := wrapperspb.Int64(id)
+		anyValue, err := anypb.New(wrapper)
+		if err != nil {
+			log.Println("Error assigning ID", err)
+			return nil, err
+		}
+
+		todo.Id = anyValue
+		todo.CreatedAt = timestamppb.New(createdAt)
 
 		todosArr = append(todosArr, &todo)
 	}
