@@ -51,6 +51,7 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: true,
   },
   {
+    id: "title",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -71,12 +72,18 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       );
     },
+    filterFn: (row, id, value) => {
+      return value.includes(row.original.type)
+    },
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
       return <div className="text-left">{row.getValue("status")}</div>;
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {

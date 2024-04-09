@@ -32,6 +32,10 @@ export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
 
   const addTodo = async () => {
     try {
+      if (!value || !todoType || !todoStatus) {
+        throw new Error("missing values");
+      }
+
       await server.todos.insert.mutate({
         title: value,
         type: todoType as string,
@@ -40,21 +44,20 @@ export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
 
       setValue("");
 
+      // @ts-ignore : reset
+      setTodoType("");
+
+      // @ts-ignore : reset
+      setTodoStatus("");
+
       refetch();
     } catch (err) {
       if (err instanceof Error) {
         console.log(err.message);
+      } else {
+        console.log(err);
       }
-      console.log(err);
     }
-  };
-
-  const setTdType = (tdType: TodoTypeType) => {
-    setTodoType(tdType);
-  };
-
-  const setTdStatus = (tdStatus: TodoStatusType) => {
-    setTodoStatus(tdStatus);
   };
 
   return (
@@ -66,10 +69,13 @@ export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
         placeholder="New Task"
       />
 
-      <Select onValueChange={setTdType}>
+      <Select
+        value={todoType}
+        onValueChange={(value: TodoTypeType) => setTodoType(value)}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Type" />
         </SelectTrigger>
+
         <SelectContent>
           {TodoTypesValues.map((item, index) => (
             <SelectItem value={item} key={index}>
@@ -79,10 +85,13 @@ export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
         </SelectContent>
       </Select>
 
-      <Select onValueChange={setTdStatus}>
+      <Select
+        value={todoStatus}
+        onValueChange={(value: TodoStatusType) => setTodoStatus(value)}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
+
         <SelectContent>
           {TodoStatusValues.map((item, index) => (
             <SelectItem value={item} key={index}>
