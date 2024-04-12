@@ -66,7 +66,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const label = row.original.type;
       return (
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 task-table-row">
           <Badge variant="secondary">{label}</Badge>
           <span>{row.getValue("title")}</span>
         </div>

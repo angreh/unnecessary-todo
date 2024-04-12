@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
@@ -20,6 +21,7 @@ import {
   RefetchOptions,
   RefetchQueryFilters,
 } from "react-query/types/core/types";
+import useSelects from "./../../hooks/useSelects";
 
 type InputFormProps = {
   onFinish: (options?: RefetchOptions & RefetchQueryFilters) => Promise<any>;
@@ -27,8 +29,8 @@ type InputFormProps = {
 
 export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
   const [value, setValue] = useState("");
-  const [todoType, setTodoType] = useState<TodoTypeType>();
-  const [todoStatus, setTodoStatus] = useState<TodoStatusType>();
+
+  const { todoType, setTodoType, todoStatus, setTodoStatus } = useSelects();
 
   const addTodo = async () => {
     try {
@@ -67,16 +69,17 @@ export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="New Task"
+        data-testid="add-input"
       />
 
       <Select
         value={todoType}
         onValueChange={(value: TodoTypeType) => setTodoType(value)}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger data-testid="add-select-type" className="w-[180px]">
           <SelectValue placeholder="Type" />
         </SelectTrigger>
 
-        <SelectContent>
+        <SelectContent data-testid="add-select-type-content">
           {TodoTypesValues.map((item, index) => (
             <SelectItem value={item} key={index}>
               {item}
@@ -88,11 +91,11 @@ export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
       <Select
         value={todoStatus}
         onValueChange={(value: TodoStatusType) => setTodoStatus(value)}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger data-testid="add-select-status" className="w-[180px]">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
 
-        <SelectContent>
+        <SelectContent data-testid="add-select-status-content">
           {TodoStatusValues.map((item, index) => (
             <SelectItem value={item} key={index}>
               {item}
@@ -101,7 +104,9 @@ export const InputForm = ({ onFinish: refetch }: InputFormProps) => {
         </SelectContent>
       </Select>
 
-      <Button onClick={addTodo}>Add</Button>
+      <Button data-testid="add-button" onClick={addTodo}>
+        Add
+      </Button>
     </div>
   );
 };

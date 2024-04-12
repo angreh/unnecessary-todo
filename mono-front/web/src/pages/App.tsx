@@ -25,7 +25,10 @@ function App() {
   return (
     <div className="App container relative">
       <div className="rounded-[0.5rem] border mb-4 mt-8">
-        <BoxHeader title="New Task" description="Add a new task" />
+        <BoxHeader
+          title="New Task"
+          description="Add a new task"
+        />
 
         <div className="px-8 py-4">
           <InputForm onFinish={refetch} />

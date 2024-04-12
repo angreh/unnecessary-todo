@@ -13,6 +13,7 @@ export function DataTableFooter<TData>({ table }: DataTableFooterProps<TData>) {
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
+
       <div className="flex items-center justify-center space-x-2">
         <Button
           variant="outline"

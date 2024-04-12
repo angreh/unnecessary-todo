@@ -27,6 +27,14 @@ build_consumer:
 stop:
 	docker compose down
 
+test: test_web test_e2e
+
+test_web:
+	cd ../mono-front/web && npm run test:nowatch
+
+test_e2e:
+	cd ../cypress && npx cypress run -b chrome
+
 protos:
 	@echo # Creating protos ..
 	cd ../protos && \

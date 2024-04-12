@@ -17,6 +17,9 @@
 		},
 		{
 			"path": "queue-consumer"
+		},
+		{
+			"path": "cypress"
 		}
 	],
 	"settings": {}
