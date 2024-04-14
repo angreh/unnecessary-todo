@@ -16,6 +16,7 @@ export function DataTableFooter<TData>({ table }: DataTableFooterProps<TData>) {
 
       <div className="flex items-center justify-center space-x-2">
         <Button
+          data-testid="btn-previous"
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
@@ -23,6 +24,7 @@ export function DataTableFooter<TData>({ table }: DataTableFooterProps<TData>) {
           Previous
         </Button>
         <Button
+          data-testid="btn-next"
           variant="outline"
           size="sm"
           onClick={() => table.nextPage()}

@@ -43,16 +43,14 @@ protos:
 	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative todos.proto && \
 	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative logger.proto
 	@echo # Removing protos from API
-	cd ../mono-front/api/src/todos && \
-	rm -f *
+	- cd ../mono-front/api/src/todos && \
+  rm -f *
 	@echo # Moving new protos to API
 	find ../protos -type f -name "todos_*.js" -exec cp {} ../mono-front/api/src/todos/ \;
 	find ../protos -type f -name "todos_*.d.ts" -exec cp {} ../mono-front/api/src/todos/ \;
 	@echo # Removing protos from CRUD
-	cd ../crud/todos && \
-	rm -f *
-	cd ../crud/logger && \
-	rm -f *
+	- find ../crud/todos/* -type f -name "*pb.go" -exec rm {} \;
+	- find ../crud/logger/* -type f -name "*pb.go" -exec rm {} \;
 	@echo # Moving protos to CRUD
 	find ../protos -type f -name "todos*.go" -exec cp {} ../crud/todos/ \;
 	find ../protos -type f -name "logger*.go" -exec cp {} ../crud/logger/ \;
@@ -61,6 +59,6 @@ protos:
 	cd ../protos && \
 	rm -rf node_modules && \
 	rm -f package-lock.json
-	find ../protos/* -type f -name "*.js" -exec rm {} \;
-	find ../protos/* -type f -name "*.d.ts" -exec rm {} \;
-	find ../protos/* -type f -name "*.go" -exec rm {} \;
+	- find ../protos/* -type f -name "*.js" -exec rm {} \;
+	- find ../protos/* -type f -name "*.d.ts" -exec rm {} \;
+	- find ../protos/* -type f -name "*.go" -exec rm {} \;

@@ -1,8 +1,11 @@
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import Fastify, { FastifyInstance, RouteShorthandOptions } from "fastify";
-import { Server, IncomingMessage, ServerResponse } from "http";
-import { appRouter } from "./routes/index";
 import cors from "@fastify/cors";
+import { Server, IncomingMessage, ServerResponse } from "http";
+
+import { appRouter } from "./routes/index";
+import { globalContext } from "./global-context";
+import { DB } from "./data/database";
 
 const server: FastifyInstance = Fastify({
   logger: false,
@@ -11,6 +14,8 @@ const server: FastifyInstance = Fastify({
 server.register(cors, {
   origin: "*",
 });
+
+globalContext.DB = DB;
 
 server.register(fastifyTRPCPlugin, {
   prefix: "/trpc",
@@ -34,13 +39,15 @@ const opts: RouteShorthandOptions = {
   },
 };
 
-server.get("/ping", opts, async (request, reply) => {
+server.get("/ping", opts, async (_request, _reply) => {
   return { pong: "it worked!" };
 });
 
 const start = async () => {
   try {
     await server.listen({ port: 8080, host: "0.0.0.0" }, (err, address) => {
+      if (err) throw err;
+
       console.log(`server listening on ${address}`);
     });
   } catch (err) {
