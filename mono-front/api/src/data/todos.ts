@@ -1,13 +1,13 @@
 import * as grpc from "@grpc/grpc-js";
 
-import { TodoServiceClient } from "todos/todos_grpc_pb";
+import { TodoServiceClient } from "externals/todos/todos_grpc_pb";
 import {
   GetAllRequest,
   GetAllResponse,
   InsertRequest,
   InsertResponse,
   Todo,
-} from "todos/todos_pb";
+} from "externals/todos/todos_pb";
 
 const getTodosClient = <T>(NewRequest: T) => {
   const client = new TodoServiceClient(

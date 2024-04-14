@@ -1,5 +1,5 @@
 import { globalContext } from "./../global-context";
-import { Todo } from "todos/todos_pb";
+import { Todo } from "externals/todos/todos_pb";
 import { extractDate, extractId } from "utils/pb-wrapper";
 
 export type TodoType = Todo.AsObject;
